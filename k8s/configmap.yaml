@@ -1,0 +1,31 @@
+# Kubernetes ConfigMap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: giewa-config
+  namespace: early-warning
+data:
+  API_HOST: "0.0.0.0"
+  API_PORT: "8000"
+  LOG_LEVEL: "INFO"
+  ANOMALY_WINDOW_SIZE: "100"
+  ANOMALY_Z_THRESHOLD: "3.0"
+  CONFIDENCE_LEVEL: "0.95"
+  MAX_ALERTS: "10000"
+  ENABLE_KAFKA: "true"
+  KAFKA_BOOTSTRAP_SERVERS: "kafka.kafka:9092"
+  KAFKA_TOPIC: "signals"
+  KAFKA_GROUP_ID: "early-warning-aggregator"
+
+---
+# Kubernetes Secrets (template - use sealed-secrets or external secrets in production)
+apiVersion: v1
+kind: Secret
+metadata:
+  name: giewa-secrets
+  namespace: early-warning
+type: Opaque
+stringData:
+  database-url: "postgresql://giewa:CHANGE_ME@postgres.database:5432/giewa"
+  api-secret-key: "CHANGE_ME_TO_SECURE_RANDOM_KEY"
+  hmac-secret: "CHANGE_ME_TO_SECURE_RANDOM_KEY"
